@@ -3,7 +3,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 import {styleNames} from 'utils/stylenames';
 import {DialogMessage} from './dialog-message/dialog-message';
-import {MessageInterface} from 'model/messageInterface';
+import {Imessage} from 'model/Imessage';
 import {Message} from './message/message';
 
 import styles from './chat.scss';
@@ -14,7 +14,7 @@ interface Props {
     isChatOpen: boolean;
     onCloseClick: () => void;
     sendMessage: (message: string) => void;
-    messages: MessageInterface[]
+    messages: Imessage[]
 }
 
 export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, messages, sendMessage}) => {
@@ -80,4 +80,4 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
             </div>
         </div>
     );
-}
+};

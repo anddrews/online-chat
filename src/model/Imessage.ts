@@ -1,4 +1,4 @@
-export interface MessageInterface {
+export interface Imessage {
     id: number;
     content: string;
     userName: string;

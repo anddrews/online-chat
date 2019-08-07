@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {styleNames} from 'utils/stylenames';
 
-import {MessageInterface} from 'model/messageInterface';
+import {Imessage} from 'model/Imessage';
 
 import styles from './message.scss';
 
@@ -10,7 +10,7 @@ const sn = styleNames(styles);
 
 
 interface Props {
-    message: MessageInterface
+    message: Imessage
 }
 
 export const Message: React.FunctionComponent<Props> = ({message: {content, userName, messageDate, currentUserName, read}}) => (

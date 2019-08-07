@@ -5,15 +5,11 @@ import {styleNames} from 'utils/stylenames';
 
 import styles from './app.scss';
 import {Chat} from './components/chat/chat';
-import {Message} from 'components/chat/message/message';
 import {CURRENT_USER_NAME} from 'const';
-import {MessageInterface} from './model/messageInterface';
+import {Imessage} from './model/Imessage';
 
 const sn = styleNames(styles);
 
-interface Props {
-
-}
 const message = [
     {
         id: 1,
@@ -94,7 +90,7 @@ const message = [
 
 export const App: React.FunctionComponent = () => {
     const [isChatOpen, toggleChatOpen] = React.useState(true);
-    const [messages, addMessage] = React.useState(message as Array<MessageInterface>);
+    const [messages, addMessage] = React.useState(message as Array<Imessage>);
 
     const chatOpenHandler = () => {
         toggleChatOpen(!isChatOpen)
