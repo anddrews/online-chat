@@ -1,0 +1,53 @@
+@import "../../../assets/styles/colors";
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  10% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseSmall {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  10% {
+    transform: scale(1);
+  }
+}
+
+.chat-opener {
+  border: 12px solid $main-chat-color;
+  border-radius: 50%;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 70px;
+  position: relative;
+  width: 70px;
+  animation: pulseSmall 1.3s infinite;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    width: calc(100% + 22px);
+    height: calc(100% + 22px);
+    box-shadow: 0 0 10px 4px rgba(102, 184, 33, 0.55), inset 0 0 2px 4px rgba(102, 184, 33, 0.55);
+    border-radius: 50%;
+    animation: pulse 1.3s linear .5s infinite;
+  }
+}

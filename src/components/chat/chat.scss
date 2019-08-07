@@ -1,0 +1,49 @@
+@import '../../assets/styles/colors';
+
+.chat {
+  border: none;
+  border-radius: 15px;
+  bottom: calc(100% + 15px);
+  box-sizing: border-box;
+  box-shadow: 0 6px 9px 0 rgba(102, 184, 33, .25);
+  display: flex;
+  flex-direction: column;
+  height: 0;
+  overflow: hidden;
+  right: 0;
+  position: absolute;
+  width: 350px;
+
+
+
+  &.active {
+    border: 1px solid $main-chat-color;
+    height: 450px;
+    transition: .25s linear;
+  }
+
+  &__header {
+    align-items: center;
+    background-color: $main-chat-color;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    min-height: 40px;
+    padding: 0 20px;
+  }
+
+  &__close {
+    cursor: pointer;
+  }
+
+  &__messages {
+    padding: 10px 15px;
+    flex: 1 0 auto;
+  }
+
+  &__dialog-message {
+    box-sizing: border-box;
+    min-height: 80px;
+    padding: 5px 10px 0;
+  }
+}

@@ -1,0 +1,6 @@
+.chat {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  color: red;
+}
