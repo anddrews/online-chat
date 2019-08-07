@@ -13,9 +13,10 @@ interface Props {
     message: Imessage
 }
 
-export const Message: React.FunctionComponent<Props> = ({message: {content, userName, messageDate, currentUserName, read}}) => (
+export const Message: React.FunctionComponent<Props> = ({message: {id, content, userName, messageDate, currentUserName, read}}) => (
     <div
         data-read={read}
+        data-id={id}
         className={sn('message', {'outgoing': userName === currentUserName})}
     >
         <div className={sn('message__info')}>

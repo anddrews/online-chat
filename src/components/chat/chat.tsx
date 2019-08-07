@@ -14,11 +14,13 @@ interface Props {
     isChatOpen: boolean;
     onCloseClick: () => void;
     sendMessage: (message: string) => void;
-    messages: Imessage[]
+    messagesLength: number;
 }
 
-export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, messages, sendMessage}) => {
+export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, children, sendMessage, messagesLength}) => {
     const messagesRef = React.createRef<HTMLDivElement>();
+    const [isScrollToUnread, setScrollToUnread] = React.useState(true);
+
     const scrollToUnread = () => {
         // @ts-ignore
         const {current: {container: {children}}} = messagesRef;
@@ -29,21 +31,29 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
         }
     };
 
-    const sendMessageHandler = message => {
+    const scrollToLast = () => {
         // @ts-ignore
         const {current: {container: {children}}} = messagesRef;
-        const unreadMessage: HTMLDivElement[] = Array.from(children[0].querySelectorAll('[class*="message__outgoing"][data-read="false"]'));
+        const lastMessage: HTMLDivElement = children[0].querySelector('[data-read]:last-child');
 
-        if(unreadMessage.length) {
-            unreadMessage[unreadMessage.length - 1].scrollIntoView();
+        if(lastMessage) {
+            lastMessage.scrollIntoView();
         }
 
-        sendMessage(message);
     };
 
     const markMessageAsRead = () => {
         console.log('scrollDown');
     };
+
+    React.useEffect(() => {
+        if (isScrollToUnread) {
+            scrollToUnread();
+            setScrollToUnread(false)
+        } else {
+            scrollToLast();
+        }
+    }, [messagesLength])
 
     return (
         <div className={sn('chat', {'active': isChatOpen})}>
@@ -62,20 +72,15 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
             <Scrollbars
                 ref={messagesRef}
                 style={{height: '100%'}}
-                onUpdate={scrollToUnread}
                 onScrollStart={markMessageAsRead}
             >
                 <div className={sn('chat__messages')}>
-                    {messages.map(item => (
-                        <Message
-                            key={item.id}
-                            message={item}
-                        />))}
+                    {children}
                 </div>
             </Scrollbars>
             <div className={sn('chat__dialog-message')}>
                 <DialogMessage
-                    onSubmit={sendMessageHandler}
+                    onSubmit={sendMessage}
                 />
             </div>
         </div>

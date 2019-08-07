@@ -7,6 +7,7 @@ import styles from './app.scss';
 import {Chat} from './components/chat/chat';
 import {CURRENT_USER_NAME} from 'const';
 import {Imessage} from './model/Imessage';
+import {Message} from './components/chat/message/message';
 
 const sn = styleNames(styles);
 
@@ -41,7 +42,7 @@ const message = [
     {
         id: 4,
         userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
+        content: `sdfsdfdsf`,
         messageDate: new Date(),
         currentUserName: CURRENT_USER_NAME,
         read: true
@@ -57,10 +58,10 @@ const message = [
     {
         id: 6,
         userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
+        content: `unreaded`,
         messageDate: new Date(),
         currentUserName: CURRENT_USER_NAME,
-        read: true
+        read: false
     },
     {
         id: 7,
@@ -80,6 +81,27 @@ const message = [
     },
     {
         id: 9,
+        userName: 'Username',
+        content: `sdfs  ;lk;k l;k;k`,
+        messageDate: new Date(),
+        currentUserName: CURRENT_USER_NAME,
+        read: true
+    },{
+        id: 10,
+        userName: 'Username',
+        content: `sdfs  ;lk;k l;k;k`,
+        messageDate: new Date(),
+        currentUserName: CURRENT_USER_NAME,
+        read: true
+    },{
+        id: 11,
+        userName: 'Username',
+        content: `sdfs  ;lk;k l;k;k`,
+        messageDate: new Date(),
+        currentUserName: CURRENT_USER_NAME,
+        read: true
+    },{
+        id: 12,
         userName: 'Username',
         content: `sdfs  ;lk;k l;k;k`,
         messageDate: new Date(),
@@ -112,9 +134,13 @@ export const App: React.FunctionComponent = () => {
                 isChatOpen={isChatOpen}
                 onCloseClick={chatOpenHandler}
                 sendMessage={handleSendMessage}
-                messages={messages}
+                messagesLength={messages.length}
             >
-
+                {messages.map(item => (
+                    <Message
+                        key={item.id}
+                        message={item}
+                    />))}
             </Chat>
             <ChatOpener
                 onClick={chatOpenHandler}
