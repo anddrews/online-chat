@@ -5,153 +5,62 @@ import {ChatOpener} from 'components/chat/chat-opener/chat-opener';
 import {Chat} from 'components/chat/chat';
 import {Message} from 'components/chat/message/message';
 import {ChatHeader} from 'components/chat-header/chat-header';
-import {CURRENT_USER_NAME} from 'const';
-import {Socket} from 'containers/socket';
-import {Imessage} from 'model/Imessage';
 
 import styles from './app.scss';
+import {Socket} from 'containers/socket';
+import {bearerToken} from 'constants/index';
 
 const sn = styleNames(styles);
 
-const message = [
-    {
-        id: 1,
-        userName: 'Anonymous',
-        content: `sdfs
-        ;lk;k
-        l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 2,
-        userName: 'Username',
-        content: `&#x1f600 adasdas
-         &#x1f600`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 3,
-        userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 4,
-        userName: 'Username',
-        content: `sdfsdfdsf`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 5,
-        userName: 'Username',
-        content: `test message`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 6,
-        userName: 'Username',
-        content: `unreaded`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: false
-    },
-    {
-        id: 7,
-        userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 8,
-        userName: 'Username',
-        content: `test message 2`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-    {
-        id: 9,
-        userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },{
-        id: 10,
-        userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },{
-        id: 11,
-        userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },{
-        id: 12,
-        userName: 'Username',
-        content: `sdfs  ;lk;k l;k;k`,
-        messageDate: new Date(),
-        currentUserName: CURRENT_USER_NAME,
-        read: true
-    },
-];
-
 export const App: React.FunctionComponent = () => {
     const [isChatOpen, toggleChatOpen] = React.useState(true);
-    const [messages, addMessage] = React.useState(message as Array<Imessage>);
 
     const chatOpenHandler = () => {
         toggleChatOpen(!isChatOpen)
     };
 
     const handleSendMessage = msg => {
-        addMessage([...messages, {
-            id: messages.length + 1,
-            userName: (messages.length + 1) % 2 === 0 ? CURRENT_USER_NAME : 'Username',
-            content: msg,
-            messageDate: new Date(),
-            currentUserName: CURRENT_USER_NAME,
-            read: false}])
+        fetch(`https://api-test.chatbullet.com/api/v1/widget/send`, {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${bearerToken}`
+            },
+            body: JSON.stringify({
+                client_id: "8bmntsmhczgkw9p8e6yrt:1652026085",
+                messages: [{type: "text", text: msg}],
+                token: "6b64d579-74a1-41e3-8a65-10a19c6adb3d",
+                user: {name: "Anonymous"},
+            })
+        })
     };
+
+    const renderChat = (messages) => (
+        <Chat
+            chatHeader={ChatHeader}
+            isChatOpen={isChatOpen}
+            onCloseClick={chatOpenHandler}
+            sendMessage={handleSendMessage}
+            messagesLength={messages.length}
+        >
+            {messages.map(item => (
+                <Message
+                    key={item.messageId}
+                    message={item}
+                />))}
+        </Chat>
+    );
 
     return (
         <div className={sn('chat')}>
-            <Socket>
-                <React.Fragment>
-                    <Chat
-                        chatHeader={ChatHeader}
-                        isChatOpen={isChatOpen}
-                        onCloseClick={chatOpenHandler}
-                        sendMessage={handleSendMessage}
-                        messagesLength={messages.length}
-                    >
-                        {messages.map(item => (
-                            <Message
-                                key={item.id}
-                                message={item}
-                            />))}
-                    </Chat>
-                    <ChatOpener
-                        onClick={chatOpenHandler}
-                    />
-                </React.Fragment>
-            </Socket>
+            <Socket
+                render={renderChat}
+            />
+            <ChatOpener
+                onClick={chatOpenHandler}
+            />
         </div>
     )
 };

@@ -13,20 +13,20 @@ interface Props {
     message: Imessage
 }
 
-export const Message: React.FunctionComponent<Props> = ({message: {id, content, userName, messageDate, currentUserName, read}}) => (
+export const Message: React.FunctionComponent<Props> = ({message: {messageId, text, out, date, authorName, read}}) => (
     <div
         data-read={read}
-        data-id={id}
-        className={sn('message', {'outgoing': userName === currentUserName})}
+        data-id={messageId}
+        className={sn('message', {'outgoing': !out})}
     >
         <div className={sn('message__info')}>
-            {userName !== currentUserName && userName} {messageDate.toLocaleTimeString()}
+            {out && authorName} {new Date(date).toLocaleTimeString()}
         </div>
         <div
             className={sn('message__content')}
         >
-            <div dangerouslySetInnerHTML={{__html: content}} />
-            {userName === currentUserName && <div className={sn('message__status', {'read': read})} >&#10003;</div>}
+            <div dangerouslySetInnerHTML={{__html: text}} />
+            {!out && <div className={sn('message__status', {'read': read})} >&#10003;</div>}
         </div>
     </div>
 );

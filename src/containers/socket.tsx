@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import {Socket as SocketIo, Event} from 'react-socket-io';
 
-import {backEndToken, widgetToken, socketUri} from 'constants/socket';
-
+import {bearerToken, clientId, socketUri} from 'constants/socket';
+// b5f2db49-f6b4-4801-b78c-2bd47002d1cc
 const socketOption = {
     reconnection: true,
     reconnectionAttempts: null,
@@ -13,19 +13,29 @@ const socketOption = {
     transports: ['websocket'],
     rejectUnauthorized: true,
     query: {
-        token: backEndToken,
-        client_id: widgetToken,
+        token: bearerToken,
+        client_id: clientId,
         type: 'widget',
-        room: '797be098-eb5e-4efb-801f-734f9b55af51'
+        room: 'b5f2db49-f6b4-4801-b78c-2bd47002d1cc'
 
     }
 };
 
-export const Socket = ({children: Children}) => {
+export const Socket = ({render}) => {
     const [messages, setMessages] = React.useState([]);
 
     const storeHistory = historyMessages => {
-        setMessages(historyMessages)
+        setMessages(historyMessages.reverse())
+    };
+
+    const storeMessage = newMessages => {
+        setMessages(messages => [...messages, ...newMessages])
+    };
+
+    const storeOutgoingMessage = newMessages => {
+        setMessages(messages => messages.find(({messageId}) => messageId === newMessages.messageId)
+            ? messages
+            : [...messages, ...newMessages])
     };
 
     return (
@@ -35,7 +45,9 @@ export const Socket = ({children: Children}) => {
         >
             <React.Fragment>
                 <Event event='message:history' handler={storeHistory} />
-                {(props) => <Children {...props} messages={messages} />}
+                <Event event='message:new' handler={storeOutgoingMessage} />
+                <Event event='widget:message' handler={storeMessage} />
+                {render(messages)}
             </React.Fragment>
         </SocketIo>
     );

@@ -1,8 +1,9 @@
 export interface Imessage {
-    id: number;
-    content: string;
-    userName: string;
-    messageDate: Date,
+    messageId: number;
+    text: string;
+    authorName: string;
+    date: string,
     currentUserName: string,
-    read: boolean
+    read: boolean,
+    out: boolean,
 }
