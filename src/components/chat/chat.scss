@@ -36,6 +36,11 @@
     cursor: pointer;
   }
 
+  &__messages-wrapper {
+    flex: 1 0 auto;
+    background-color: rgba(77, 249, 60, 0.23);
+  }
+
   &__messages {
     padding: 10px 15px;
     flex: 1 0 auto;

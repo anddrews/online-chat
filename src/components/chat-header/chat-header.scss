@@ -1,0 +1,16 @@
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #d5d5d5;
+  font-size: 16px;
+
+  &__icon {
+    background-color: green;
+    border-radius: 50%;
+    display: block;
+    height: 50px;
+    margin: 10px 20px;
+    width: 50px;
+  }
+}

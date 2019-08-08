@@ -1,13 +1,15 @@
 import * as React from 'react';
 
-import {ChatOpener} from 'components/chat/chat-opener/chat-opener';
 import {styleNames} from 'utils/stylenames';
+import {ChatOpener} from 'components/chat/chat-opener/chat-opener';
+import {Chat} from 'components/chat/chat';
+import {Message} from 'components/chat/message/message';
+import {ChatHeader} from 'components/chat-header/chat-header';
+import {CURRENT_USER_NAME} from 'const';
+import {Socket} from 'containers/socket';
+import {Imessage} from 'model/Imessage';
 
 import styles from './app.scss';
-import {Chat} from './components/chat/chat';
-import {CURRENT_USER_NAME} from 'const';
-import {Imessage} from './model/Imessage';
-import {Message} from './components/chat/message/message';
 
 const sn = styleNames(styles);
 
@@ -121,7 +123,7 @@ export const App: React.FunctionComponent = () => {
     const handleSendMessage = msg => {
         addMessage([...messages, {
             id: messages.length + 1,
-            userName: CURRENT_USER_NAME,
+            userName: (messages.length + 1) % 2 === 0 ? CURRENT_USER_NAME : 'Username',
             content: msg,
             messageDate: new Date(),
             currentUserName: CURRENT_USER_NAME,
@@ -130,22 +132,26 @@ export const App: React.FunctionComponent = () => {
 
     return (
         <div className={sn('chat')}>
-            <Chat
-                isChatOpen={isChatOpen}
-                onCloseClick={chatOpenHandler}
-                sendMessage={handleSendMessage}
-                messagesLength={messages.length}
-            >
-                {messages.map(item => (
-                    <Message
-                        key={item.id}
-                        message={item}
-                    />))}
-            </Chat>
-            <ChatOpener
-                onClick={chatOpenHandler}
-            />
-
+            <Socket>
+                <React.Fragment>
+                    <Chat
+                        chatHeader={ChatHeader}
+                        isChatOpen={isChatOpen}
+                        onCloseClick={chatOpenHandler}
+                        sendMessage={handleSendMessage}
+                        messagesLength={messages.length}
+                    >
+                        {messages.map(item => (
+                            <Message
+                                key={item.id}
+                                message={item}
+                            />))}
+                    </Chat>
+                    <ChatOpener
+                        onClick={chatOpenHandler}
+                    />
+                </React.Fragment>
+            </Socket>
         </div>
     )
 };

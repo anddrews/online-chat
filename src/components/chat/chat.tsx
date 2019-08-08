@@ -15,9 +15,10 @@ interface Props {
     onCloseClick: () => void;
     sendMessage: (message: string) => void;
     messagesLength: number;
+    chatHeader: React.FunctionComponent;
 }
 
-export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, children, sendMessage, messagesLength}) => {
+export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, children, sendMessage, messagesLength, chatHeader: ChatHeader}) => {
     const messagesRef = React.createRef<HTMLDivElement>();
     const [isScrollToUnread, setScrollToUnread] = React.useState(true);
 
@@ -58,10 +59,7 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
     return (
         <div className={sn('chat', {'active': isChatOpen})}>
             <div className={sn('chat__header')}>
-                <div className={sn('chat__company-name')}>
-                    Напишите нам сообщение <br/>
-                    Наши операторы онлайн
-                </div>
+                <ChatHeader />
                 <div
                     onClick={onCloseClick}
                     className={sn('chat__close')}
@@ -69,15 +67,17 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
                     x
                 </div>
             </div>
-            <Scrollbars
-                ref={messagesRef}
-                style={{height: '100%'}}
-                onScrollStart={markMessageAsRead}
-            >
-                <div className={sn('chat__messages')}>
-                    {children}
-                </div>
-            </Scrollbars>
+            <div className={sn('chat__messages-wrapper')}>
+                <Scrollbars
+                    ref={messagesRef}
+                    style={{height: '100%'}}
+                    onScrollStart={markMessageAsRead}
+                >
+                    <div className={sn('chat__messages')}>
+                        {children}
+                    </div>
+                </Scrollbars>
+            </div>
             <div className={sn('chat__dialog-message')}>
                 <DialogMessage
                     onSubmit={sendMessage}
