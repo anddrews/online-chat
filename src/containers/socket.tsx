@@ -32,10 +32,10 @@ export const Socket = ({render}) => {
         setMessages(messages => [...messages, ...newMessages])
     };
 
-    const storeOutgoingMessage = newMessages => {
+    const storeOutgoingMessage = ([newMessages]) => {
         setMessages(messages => messages.find(({messageId}) => messageId === newMessages.messageId)
             ? messages
-            : [...messages, ...newMessages])
+            : [...messages, {...newMessages, messageId: messages.length + 1}])
     };
 
     return (

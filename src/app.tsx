@@ -39,18 +39,13 @@ export const App: React.FunctionComponent = () => {
 
     const renderChat = (messages) => (
         <Chat
-            chatHeader={ChatHeader}
+            renderHeader={ChatHeader}
             isChatOpen={isChatOpen}
             onCloseClick={chatOpenHandler}
             sendMessage={handleSendMessage}
-            messagesLength={messages.length}
-        >
-            {messages.map(item => (
-                <Message
-                    key={item.messageId}
-                    message={item}
-                />))}
-        </Chat>
+            renderMessage={Message}
+            messages={messages}
+        />
     );
 
     return (

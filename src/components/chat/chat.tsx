@@ -4,7 +4,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import {styleNames} from 'utils/stylenames';
 import {DialogMessage} from './dialog-message/dialog-message';
 import {Imessage} from 'model/Imessage';
-import {Message} from './message/message';
 
 import styles from './chat.scss';
 
@@ -14,11 +13,19 @@ interface Props {
     isChatOpen: boolean;
     onCloseClick: () => void;
     sendMessage: (message: string) => void;
-    messagesLength: number;
-    chatHeader: React.FunctionComponent;
+    renderHeader: React.FunctionComponent;
+    renderMessage: React.FunctionComponent<{message: Imessage}>;
+    messages: Imessage[];
 }
 
-export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, children, sendMessage, messagesLength, chatHeader: ChatHeader}) => {
+export const Chat: React.FunctionComponent<Props> = ({
+         isChatOpen,
+         onCloseClick,
+         messages,
+         sendMessage,
+         renderHeader: Header,
+         renderMessage: MessageComponent
+    }) => {
     const messagesRef = React.createRef<HTMLDivElement>();
     const [isScrollToUnread, setScrollToUnread] = React.useState(true);
 
@@ -35,7 +42,7 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
     const scrollToLast = () => {
         // @ts-ignore
         const {current: {container: {children}}} = messagesRef;
-        const lastMessage: HTMLDivElement = children[0].querySelector('[data-read]:last-child');
+        const lastMessage: HTMLDivElement = children[0].firstElementChild.lastElementChild;
 
         if(lastMessage) {
             lastMessage.scrollIntoView();
@@ -48,18 +55,18 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
     };
 
     React.useEffect(() => {
-        if (isScrollToUnread) {
+        if (messages.length && isScrollToUnread) {
             scrollToUnread();
             setScrollToUnread(false)
         } else {
             scrollToLast();
         }
-    }, [messagesLength])
+    }, [messages])
 
     return (
         <div className={sn('chat', {'active': isChatOpen})}>
             <div className={sn('chat__header')}>
-                <ChatHeader />
+                <Header />
                 <div
                     onClick={onCloseClick}
                     className={sn('chat__close')}
@@ -74,7 +81,12 @@ export const Chat: React.FunctionComponent<Props> = ({isChatOpen, onCloseClick, 
                     onScrollStart={markMessageAsRead}
                 >
                     <div className={sn('chat__messages')}>
-                        {children}
+                        {messages.map(item => (
+                            <MessageComponent
+                                key={item.messageId}
+                                message={item}
+                            />
+                        ))}
                     </div>
                 </Scrollbars>
             </div>
