@@ -8,7 +8,7 @@ import {ChatHeader} from 'components/chat-header/chat-header';
 
 import styles from './app.scss';
 import {Socket} from 'containers/socket';
-import {bearerToken} from 'constants/index';
+import {bearerToken} from 'const';
 
 const sn = styleNames(styles);
 

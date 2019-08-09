@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {Socket as SocketIo, Event} from 'react-socket-io';
 
-import {bearerToken, clientId, socketUri} from 'constants/socket';
+import {bearerToken, clientId, socketUri} from 'const/socket';
 // b5f2db49-f6b4-4801-b78c-2bd47002d1cc
 const socketOption = {
     reconnection: true,
