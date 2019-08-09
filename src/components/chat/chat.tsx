@@ -23,8 +23,8 @@ export const Chat: React.FunctionComponent<Props> = ({
          onCloseClick,
          messages,
          sendMessage,
-         renderHeader: Header,
-         renderMessage: MessageComponent
+         renderHeader,
+         renderMessage
     }) => {
     const messagesRef = React.createRef<HTMLDivElement>();
     const [isScrollToUnread, setScrollToUnread] = React.useState(true);
@@ -66,7 +66,7 @@ export const Chat: React.FunctionComponent<Props> = ({
     return (
         <div className={sn('chat', {'active': isChatOpen})}>
             <div className={sn('chat__header')}>
-                <Header />
+                {renderHeader({})}
                 <div
                     onClick={onCloseClick}
                     className={sn('chat__close')}
@@ -82,10 +82,7 @@ export const Chat: React.FunctionComponent<Props> = ({
                 >
                     <div className={sn('chat__messages')}>
                         {messages.map(item => (
-                            <MessageComponent
-                                key={item.messageId}
-                                message={item}
-                            />
+                            renderMessage({message: item})
                         ))}
                     </div>
                 </Scrollbars>

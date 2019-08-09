@@ -15,6 +15,7 @@ interface Props {
 
 export const Message: React.FunctionComponent<Props> = ({message: {messageId, text, out, date, authorName, read}}) => (
     <div
+        key={messageId}
         data-read={read}
         data-id={messageId}
         className={sn('message', {'outgoing': !out})}
