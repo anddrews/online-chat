@@ -9,6 +9,7 @@ import {ChatHeader} from 'components/chat-header/chat-header';
 import styles from './app.scss';
 import {Socket} from 'containers/socket';
 import {bearerToken} from 'const';
+import {Imessage} from './model/Imessage';
 
 const sn = styleNames(styles);
 
@@ -19,25 +20,11 @@ export const App: React.FunctionComponent = () => {
         toggleChatOpen(!isChatOpen)
     };
 
-    const handleSendMessage = msg => {
-        fetch(`https://api-test.chatbullet.com/api/v1/widget/send`, {
-            method: 'post',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${bearerToken}`
-            },
-            body: JSON.stringify({
-                client_id: "8bmntsmhczgkw9p8e6yrt:1652026085",
-                messages: [{type: "text", text: msg}],
-                token: "6b64d579-74a1-41e3-8a65-10a19c6adb3d",
-                user: {name: "Anonymous"},
-            })
-        })
-    };
-
-    const renderChat = (messages) => (
+    interface Props {
+        messages: Imessage[];
+        handleSendMessage: (text: string, attachments: any) => void;
+    }
+    const renderChat: React.FunctionComponent<Props> = ({messages, handleSendMessage}) => (
         <Chat
             renderHeader={ChatHeader}
             isChatOpen={isChatOpen}

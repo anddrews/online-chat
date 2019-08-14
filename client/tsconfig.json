@@ -12,5 +12,7 @@
     "baseUrl": "src"
   },
   "compileOnSave": false,
-  "exclude": ["node_modules"]
+  "exclude": [
+    "../node_modules"
+  ]
 }

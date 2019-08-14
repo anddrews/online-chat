@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 import {styleNames} from 'utils/stylenames';
 import {DialogMessage} from './dialog-message/dialog-message';
@@ -12,7 +12,7 @@ const sn = styleNames(styles);
 interface Props {
     isChatOpen: boolean;
     onCloseClick: () => void;
-    sendMessage: (message: string) => void;
+    sendMessage: (text: string, attachments?:any) => void;
     renderHeader: React.FunctionComponent;
     renderMessage: React.FunctionComponent<{message: Imessage}>;
     messages: Imessage[];
@@ -23,8 +23,8 @@ export const Chat: React.FunctionComponent<Props> = ({
          onCloseClick,
          messages,
          sendMessage,
-         renderHeader,
-         renderMessage
+         renderHeader: HeaderComponent,
+         renderMessage: MessageComponent
     }) => {
     const messagesRef = React.createRef<HTMLDivElement>();
     const [isScrollToUnread, setScrollToUnread] = React.useState(true);
@@ -66,7 +66,7 @@ export const Chat: React.FunctionComponent<Props> = ({
     return (
         <div className={sn('chat', {'active': isChatOpen})}>
             <div className={sn('chat__header')}>
-                {renderHeader({})}
+                <HeaderComponent />
                 <div
                     onClick={onCloseClick}
                     className={sn('chat__close')}
@@ -82,7 +82,9 @@ export const Chat: React.FunctionComponent<Props> = ({
                 >
                     <div className={sn('chat__messages')}>
                         {messages.map(item => (
-                            renderMessage({message: item})
+                            <MessageComponent
+                                message={item}
+                            />
                         ))}
                     </div>
                 </Scrollbars>

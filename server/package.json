@@ -1,0 +1,14 @@
+{
+  "name": "online-chat-server",
+  "version": "1.0.0",
+  "description": "server for online-chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrei Kandratsenka",
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "^2.2.0"
+  }
+}
