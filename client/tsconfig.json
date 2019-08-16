@@ -9,10 +9,10 @@
     "sourceMap": true,
     "noLib": false,
     "suppressImplicitAnyIndexErrors": true,
-    "baseUrl": "src"
+    "baseUrl": "./src"
   },
   "compileOnSave": false,
   "exclude": [
-    "../node_modules"
+    "./node_modules"
   ]
 }

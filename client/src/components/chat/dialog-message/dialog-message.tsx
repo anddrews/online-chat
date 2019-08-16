@@ -38,7 +38,7 @@ export const DialogMessage = ({onSubmit}) => {
         }
 
         if (keyCode === 13) {
-            if (inputField.innerText) {
+            if (inputField.innerText || attachments.length) {
                 onSubmit(inputField.innerText, attachments);
             }
             clearInput();

@@ -44,6 +44,8 @@ export class Socket extends React.Component<Props,State> {
         super(props);
 
         this.socket = openSocket(socketUri, socketOption);
+        // @ts-ignore
+        this.socket.binaryType = 'arrayBuffer';
 
         this.socket.on('message:history', historyMessages => this.setMessages(historyMessages));
 
